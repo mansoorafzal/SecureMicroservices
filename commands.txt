@@ -1,0 +1,4 @@
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/IdentityServer/IdentityServer4.Quickstart.UI/main/getmain.ps1'))
+<< OR >>
+dotnet new -i identityserver4.templates
+dotnet new is4ui
