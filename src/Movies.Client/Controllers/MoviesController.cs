@@ -25,7 +25,7 @@ namespace Movies.Client.Controllers
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-            LogTokenAndClaims();
+            await LogTokenAndClaims();
             return View(await _movieService.GetMovies());
         }
 
@@ -87,6 +87,14 @@ namespace Movies.Client.Controllers
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
         }
 
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> OnlyAdmin()
+        {
+            var userInfo = await _movieService.GetUserInfo();
+            
+            return View(userInfo);
+        }
+
         private bool MovieExists(int id)
         {
             return true;
@@ -103,7 +111,5 @@ namespace Movies.Client.Controllers
                 Debug.WriteLine($"Claim type: {claim.Type} - Claim value: {claim.Value}");
             }
         }
-
-
     }
 }
