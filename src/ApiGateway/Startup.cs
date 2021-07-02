@@ -1,3 +1,4 @@
+using Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,9 +15,9 @@ namespace ApiGateway
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication().AddJwtBearer("IdentityApiKey", x =>
+            services.AddAuthentication().AddJwtBearer(Constant.Identity_Api_Key, x =>
             {
-                x.Authority = "https://localhost:5005";
+                x.Authority = Url.Identity_Server;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateAudience = false

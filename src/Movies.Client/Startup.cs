@@ -1,4 +1,5 @@
-﻿using IdentityModel;
+﻿using Common;
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -39,19 +40,19 @@ namespace Movies.Client
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {
-                options.Authority = "https://localhost:5005";
-                options.ClientId = "movies_mvc_client";
-                options.ClientSecret = "secret";
-                options.ResponseType = "code id_token";
+                options.Authority = Url.Identity_Server;
+                options.ClientId = Constant.Movies_Client_Id_Value;
+                options.ClientSecret = Constant.Movies_Client_Secret;
+                options.ResponseType = Constant.Response_Type;
 
-                options.Scope.Add("openid");
-                options.Scope.Add("profile");
-                options.Scope.Add("address");
-                options.Scope.Add("email");
-                options.Scope.Add("role");
-                options.Scope.Add("movieApi");
+                options.Scope.Add(Constant.Scope_Open_Id);
+                options.Scope.Add(Constant.Scope_Profile);
+                options.Scope.Add(Constant.Scope_Address);
+                options.Scope.Add(Constant.Scope_Email);
+                options.Scope.Add(Constant.Scope_Role_Value);
+                options.Scope.Add(Constant.Scope_Movie_Api_Value);
 
-                options.ClaimActions.MapUniqueJsonKey("role", "role");
+                options.ClaimActions.MapUniqueJsonKey(Constant.Scope_Role_Value, Constant.Scope_Role_Value);
 
                 options.SaveTokens = true;
                 options.GetClaimsFromUserInfoEndpoint = true;
@@ -65,19 +66,19 @@ namespace Movies.Client
 
             services.AddTransient<AuthenticationDelegatingHandler>();
 
-            services.AddHttpClient("MovieApiClient", client =>
+            services.AddHttpClient(Constant.Http_Client_Movies_Api, client =>
             {
-                client.BaseAddress = new Uri("https://localhost:5010/");
+                client.BaseAddress = new Uri(Url.Api_Gateway);
                 client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+                client.DefaultRequestHeaders.Add(HeaderNames.Accept, Constant.Content_Type_Json);
             })
             .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
 
-            services.AddHttpClient("IdpClient", client =>
+            services.AddHttpClient(Constant.Http_Client_Idp, client =>
             {
-                client.BaseAddress = new Uri("https://localhost:5005/");
+                client.BaseAddress = new Uri(Url.Identity_Server);
                 client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+                client.DefaultRequestHeaders.Add(HeaderNames.Accept, Constant.Content_Type_Json);
             });
 
             services.AddHttpContextAccessor();

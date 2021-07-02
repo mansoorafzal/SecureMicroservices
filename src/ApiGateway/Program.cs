@@ -1,3 +1,4 @@
+using Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -15,7 +16,7 @@ namespace ApiGateway
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    config.AddJsonFile("ocelot.json");
+                    config.AddJsonFile(Constant.Ocelot_Json_File_Name);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

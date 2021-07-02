@@ -1,4 +1,5 @@
-﻿using IdentityModel.Client;
+﻿using Common;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -24,9 +25,9 @@ namespace Movies.Client.Services
 
         public async Task<IEnumerable<Movie>> GetMovies()
         {
-            var httpClient = _httpClientFactory.CreateClient("MovieApiClient");
+            var httpClient = _httpClientFactory.CreateClient(Constant.Http_Client_Movies_Api);
 
-            var request = new HttpRequestMessage(HttpMethod.Get, "/movies");
+            var request = new HttpRequestMessage(HttpMethod.Get, Url.Movies);
 
             var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
 
@@ -61,7 +62,7 @@ namespace Movies.Client.Services
 
         public async Task<UserInfoViewModel> GetUserInfo()
         {
-            var idpClient = _httpClientFactory.CreateClient("IdpClient");
+            var idpClient = _httpClientFactory.CreateClient(Constant.Http_Client_Idp);
 
             var metaDataResponse = await idpClient.GetDiscoveryDocumentAsync();
 

@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Movies.Api.Data;
 using Microsoft.IdentityModel.Tokens;
+using Common;
 
 namespace Movies.Api
 {
@@ -28,12 +29,12 @@ namespace Movies.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Movies.Api", Version = "v1" });
             });
 
-            services.AddDbContext<MoviesApiContext>(options => options.UseInMemoryDatabase("Movies"));
+            services.AddDbContext<MoviesApiContext>(options => options.UseInMemoryDatabase(Constant.Movies_Database_Name));
 
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", options =>
+            services.AddAuthentication(Constant.Authentication_Scheme_Bearer)
+                .AddJwtBearer(Constant.Authentication_Scheme_Bearer, options =>
                 {
-                    options.Authority = "https://localhost:5005";
+                    options.Authority = Url.Identity_Server;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false
@@ -42,7 +43,7 @@ namespace Movies.Api
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ClientIdPolicy", policy => policy.RequireClaim("client_id", "movies_mvc_client"));
+                options.AddPolicy(Constant.Client_Id_Policy, policy => policy.RequireClaim(Constant.Movies_Client_Id_Key, Constant.Movies_Client_Id_Value));
             });
         }
 

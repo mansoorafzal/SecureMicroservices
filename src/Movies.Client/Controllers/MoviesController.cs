@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Common;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -9,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Movies.Client.Models;
 using Movies.Client.Services;
+
+// TODO - Routes
 
 namespace Movies.Client.Controllers
 {
@@ -87,7 +90,7 @@ namespace Movies.Client.Controllers
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = Constant.Role_Admin)]
         public async Task<IActionResult> OnlyAdmin()
         {
             var userInfo = await _movieService.GetUserInfo();

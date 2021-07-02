@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Client", "Movies.Cli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{CD61DF37-7DA6-475E-BDEA-40610EA4F024}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{234B58EB-3E50-40D5-B99C-CD5EE79C0B86}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CD61DF37-7DA6-475E-BDEA-40610EA4F024}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD61DF37-7DA6-475E-BDEA-40610EA4F024}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD61DF37-7DA6-475E-BDEA-40610EA4F024}.Release|Any CPU.Build.0 = Release|Any CPU
+		{234B58EB-3E50-40D5-B99C-CD5EE79C0B86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{234B58EB-3E50-40D5-B99C-CD5EE79C0B86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{234B58EB-3E50-40D5-B99C-CD5EE79C0B86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{234B58EB-3E50-40D5-B99C-CD5EE79C0B86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
