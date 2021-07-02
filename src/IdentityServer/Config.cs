@@ -11,17 +11,7 @@ namespace IdentityServer
     {
         public static IEnumerable<Client> Clients =>
             new Client[]
-            {
-                //new Client
-                //{
-                //    ClientId = "movieClient",
-                //    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                //    ClientSecrets =
-                //    {
-                //        new Secret("secret".Sha256())
-                //    },
-                //    AllowedScopes = { "movieApi" }
-                //},
+            {   
                 new Client
                 {
                     ClientId = "movies_mvc_client",
