@@ -1,5 +1,4 @@
 ﻿using IdentityModel;
-using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -68,7 +67,7 @@ namespace Movies.Client
 
             services.AddHttpClient("MovieApiClient", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:5001/");
+                client.BaseAddress = new Uri("https://localhost:5010/");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
             })

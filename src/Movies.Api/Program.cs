@@ -10,6 +10,7 @@ namespace Movies.Api
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+
             SeedDatabase(host);
             host.Run();
         }
@@ -24,8 +25,10 @@ namespace Movies.Api
         private static void SeedDatabase(IHost host)
         {
             using var scope = host.Services.CreateScope();
+
             var services = scope.ServiceProvider;
             var moviesContext = services.GetRequiredService<MoviesApiContext>();
+            
             MoviesContextSeed.SeedAsync(moviesContext);
         }
     }
