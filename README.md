@@ -7,3 +7,5 @@ Implementation is based on the online course on Microservices. It includes follo
 <br> Microsoft.AspNetCore.Authentication.JwtBearer
 <br> Microsoft.AspNetCore.Authentication.OpenIdConnect
 <br> IdentityModel
+<br> Ocelot
+<br> Microsoft.AspNetCore.Authentication.JwtBearer
