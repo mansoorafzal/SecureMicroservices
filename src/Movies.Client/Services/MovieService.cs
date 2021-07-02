@@ -1,7 +1,9 @@
-﻿using Movies.Client.Models;
+﻿using IdentityModel.Client;
+using Movies.Client.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Movies.Client.Services
@@ -10,22 +12,44 @@ namespace Movies.Client.Services
     {
         public async Task<IEnumerable<Movie>> GetMovies()
         {
-            var movieList = new List<Movie>();
+            var client = new HttpClient();
 
-            movieList.Add(
-                new Movie
-                {
-                    Id = 1,
-                    Genre = "Comics",
-                    Title = "asd",
-                    Rating = "9.2",
-                    ImageUrl = "images/src",
-                    ReleaseDate = DateTime.Now,
-                    Owner = "admin"
-                }
-            );
+            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5005");
 
-            return await Task.FromResult(movieList);
+            if (disco.IsError)
+            {
+                return null;
+            }
+
+            var apiClientCredentials = new ClientCredentialsTokenRequest
+            {
+                Address = "https://localhost:5005/connect/token",
+
+                ClientId = "movieClient",
+                ClientSecret = "secret",
+                Scope = "movieApi"
+            };
+
+            var tokenResponse = await client.RequestClientCredentialsTokenAsync(apiClientCredentials);
+
+            if (tokenResponse.IsError)
+            {
+                return null;
+            }
+
+            var apiClient = new HttpClient();
+
+            apiClient.SetBearerToken(tokenResponse.AccessToken);
+
+            var response = await apiClient.GetAsync("https://localhost:5001/api/movies");
+
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            var movieList = JsonConvert.DeserializeObject<List<Movie>>(content);
+
+            return movieList;
         }
 
         public Task<Movie> GetMovie(string id)
