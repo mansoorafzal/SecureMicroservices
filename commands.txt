@@ -2,5 +2,3 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercon
 << OR >>
 dotnet new -i identityserver4.templates
 dotnet new is4ui
-
-IdentityModel
