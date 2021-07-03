@@ -7,9 +7,12 @@ dotnet new is4ui
 /* installing migration tool */
 dotnet tool install --global dotnet-ef
 
-/* create migrations */
+/* create migration for identityserver4 */
 dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
 dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
 
-/* remove migrations */
+/* remove migrations for identityserver4 */
 ef migrations remove
+
+/* setup the migration */
+Add-Migration InitialCreate

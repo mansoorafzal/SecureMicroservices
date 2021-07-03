@@ -29,7 +29,7 @@ namespace Movies.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Movies.Api", Version = "v1" });
             });
 
-            services.AddDbContext<MoviesApiContext>(options => options.UseInMemoryDatabase(Constant.Movies_Database_Name));
+            services.AddDbContext<MoviesContext>(options => options.UseSqlServer(Configuration.GetConnectionString(Constant.Connection_String_Client_Key)));
 
             services.AddAuthentication(Constant.Authentication_Scheme_Bearer)
                 .AddJwtBearer(Constant.Authentication_Scheme_Bearer, options =>

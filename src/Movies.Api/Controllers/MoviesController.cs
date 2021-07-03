@@ -17,9 +17,9 @@ namespace Movies.Api.Controllers
     [Authorize(Constant.Client_Id_Policy)]
     public class MoviesController : ControllerBase
     {
-        private readonly MoviesApiContext _context;
+        private readonly MoviesContext _context;
 
-        public MoviesController(MoviesApiContext context)
+        public MoviesController(MoviesContext context)
         {
             _context = context;
         }
@@ -28,14 +28,14 @@ namespace Movies.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovie()
         {
-            return await _context.Movie.ToListAsync();
+            return await _context.Movies.ToListAsync();
         }
 
         // GET: api/Movies/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Movie>> GetMovie(int id)
         {
-            var movie = await _context.Movie.FindAsync(id);
+            var movie = await _context.Movies.FindAsync(id);
 
             if (movie == null)
             {
@@ -81,7 +81,7 @@ namespace Movies.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Movie>> PostMovie(Movie movie)
         {
-            _context.Movie.Add(movie);
+            _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
@@ -91,13 +91,13 @@ namespace Movies.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
         {
-            var movie = await _context.Movie.FindAsync(id);
+            var movie = await _context.Movies.FindAsync(id);
             if (movie == null)
             {
                 return NotFound();
             }
 
-            _context.Movie.Remove(movie);
+            _context.Movies.Remove(movie);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -105,7 +105,7 @@ namespace Movies.Api.Controllers
 
         private bool MovieExists(int id)
         {
-            return _context.Movie.Any(e => e.Id == id);
+            return _context.Movies.Any(e => e.Id == id);
         }
     }
 }

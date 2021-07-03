@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Movies.Api.Data;
+using Movies.Api.Extensions;
 
 namespace Movies.Api
 {
@@ -11,7 +13,12 @@ namespace Movies.Api
         {
             var host = CreateHostBuilder(args).Build();
 
-            SeedDatabase(host);
+            host.MigrateDatabase<MoviesContext>((context, services) =>
+            {
+                var logger = services.GetService<ILogger<MoviesContextSeed>>();
+                MoviesContextSeed.SeedAsync(context, logger).Wait();
+            });
+
             host.Run();
         }
 
@@ -21,15 +28,5 @@ namespace Movies.Api
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-
-        private static void SeedDatabase(IHost host)
-        {
-            using var scope = host.Services.CreateScope();
-
-            var services = scope.ServiceProvider;
-            var moviesContext = services.GetRequiredService<MoviesApiContext>();
-            
-            MoviesContextSeed.SeedAsync(moviesContext);
-        }
     }
 }

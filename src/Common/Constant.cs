@@ -8,6 +8,9 @@
         public const string Ocelot_Json_File_Name = "ocelot.json";
         public const string Response_Type = "code id_token";
 
+        public const string Connection_String_Identity_Server_Key = "IdentityServerDatabase";
+        public const string Connection_String_Client_Key = "ClientDatabase";
+
         public const string Http_Client_Movies_Api = "MovieApiClient";
         public const string Http_Client_Idp = "IdpClient";
 
@@ -15,10 +18,8 @@
         public const string Movies_Client_Id_Value = "movies_mvc_client";
         public const string Movies_Client_Name = "Movies MVC Web App";
         public const string Movies_Client_Secret = "secret";
-        public const string Movies_Database_Name = "Movies";
 
         public const string Role_Admin = "admin";
-
 
         public const string Scope_Address = "address";
         public const string Scope_Email = "email";

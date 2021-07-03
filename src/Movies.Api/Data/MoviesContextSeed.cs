@@ -1,7 +1,9 @@
-﻿using Movies.Api.Models;
+﻿using Microsoft.Extensions.Logging;
+using Movies.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 // TODO - Data
 
@@ -9,15 +11,14 @@ namespace Movies.Api.Data
 {
     public class MoviesContextSeed
     {
-        public static void SeedAsync(MoviesApiContext moviesContext)
+        public static async Task SeedAsync(MoviesContext moviesContext, ILogger<MoviesContextSeed> logger)
         {
-            if (!moviesContext.Movie.Any())
+            if (!moviesContext.Movies.Any())
             {
                 var movies = new List<Movie>
                 {
                     new Movie
-                    {
-                        Id = 1,
+                    {   
                         Genre = "Drama",
                         Title = "The Shawshank Redemption",
                         Rating = "9.3",
@@ -27,7 +28,6 @@ namespace Movies.Api.Data
                     },
                     new Movie
                     {
-                        Id = 2,
                         Genre = "Crime",
                         Title = "The Godfather",
                         Rating = "9.2",
@@ -37,7 +37,6 @@ namespace Movies.Api.Data
                     },
                     new Movie
                     {
-                        Id = 3,
                         Genre = "Action",
                         Title = "The Dark Knight",
                         Rating = "9.1",
@@ -47,7 +46,6 @@ namespace Movies.Api.Data
                     },
                     new Movie
                     {
-                        Id = 4,
                         Genre = "Crime",
                         Title = "12 Angry Men",
                         Rating = "8.9",
@@ -57,7 +55,6 @@ namespace Movies.Api.Data
                     },
                     new Movie
                     {
-                        Id = 5,
                         Genre = "Biography",
                         Title = "Schindler's List",
                         Rating = "8.9",
@@ -67,7 +64,6 @@ namespace Movies.Api.Data
                     },
                     new Movie
                     {
-                        Id = 6,
                         Genre = "Drama",
                         Title = "Pulp Fiction",
                         Rating = "8.9",
@@ -77,7 +73,6 @@ namespace Movies.Api.Data
                     },
                     new Movie
                     {
-                        Id = 7,
                         Genre = "Drama",
                         Title = "Fight Club",
                         Rating = "8.8",
@@ -87,7 +82,6 @@ namespace Movies.Api.Data
                     },
                     new Movie
                     {
-                        Id = 8,
                         Genre = "Romance",
                         Title = "Forrest Gump",
                         Rating = "8.8",
@@ -97,8 +91,10 @@ namespace Movies.Api.Data
                     }
                 };
 
-                moviesContext.Movie.AddRange(movies);
-                moviesContext.SaveChanges();
+                moviesContext.Movies.AddRange(movies);
+                await moviesContext.SaveChangesAsync();
+
+                logger.LogInformation("Seed database associated with context {DbContextName}", typeof(MoviesContext).Name);
             }
         }
     }
