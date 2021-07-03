@@ -11,5 +11,6 @@
         public const string Sign_Out = Movies_Client + "/signout-callback-oidc";
 
         public const string Movies = "/movies";
+        public const string Movies_Id = "/movies/{0}";
     }
 }

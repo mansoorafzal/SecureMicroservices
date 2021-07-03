@@ -3,8 +3,8 @@ using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Movies.Client.Extensions;
 using Movies.Client.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -25,24 +25,16 @@ namespace Movies.Client.Services
 
         public async Task<IEnumerable<Movie>> GetMovies()
         {
-            var httpClient = _httpClientFactory.CreateClient(Constant.Http_Client_Movies_Api);
+            var movieList = await Execute<List<Movie>>(HttpMethod.Get, Url.Movies);
 
-            var request = new HttpRequestMessage(HttpMethod.Get, Url.Movies);
-
-            var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
-
-            response.EnsureSuccessStatusCode();
-
-            var content = await response.Content.ReadAsStringAsync();
-
-            var movieList = JsonConvert.DeserializeObject<List<Movie>>(content);
-            
             return movieList;
         }
 
         public async Task<Movie> GetMovie(int id)
         {
-            throw new NotImplementedException();
+            var movie = await Execute<Movie>(HttpMethod.Get, string.Format(Url.Movies_Id, id));
+
+            return movie;
         }
 
         public Task<Movie> CreateMovie(Movie movie)
@@ -93,6 +85,19 @@ namespace Movies.Client.Services
             }
 
             return new UserInfoViewModel(userInfoDictionary);
+        }
+
+        private async Task<T> Execute<T>(HttpMethod method, string uri)
+        {
+            var httpClient = _httpClientFactory.CreateClient(Constant.Http_Client_Movies_Api);
+
+            var request = new HttpRequestMessage(method, uri);
+
+            var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response.ReadContentAs<T>();
         }
     }
 }

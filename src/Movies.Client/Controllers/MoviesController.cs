@@ -35,7 +35,7 @@ namespace Movies.Client.Controllers
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            return View();
+            return View(await _movieService.GetMovie(id.Value));
         }
 
         // GET: Movies/Create
