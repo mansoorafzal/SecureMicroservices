@@ -10,11 +10,11 @@ namespace Movies.Client.Services
 
         Task<Movie> GetMovie(int id);
 
-        Task<Movie> CreateMovie(Movie movie);
+        Task<bool> CreateMovie(Movie movie);
         
-        Task<Movie> UpdateMovie(Movie movie);
+        Task<bool> UpdateMovie(int id, Movie movie);
 
-        Task DeleteMovie(int id);
+        Task<bool> DeleteMovie(int id);
 
         Task<UserInfoViewModel> GetUserInfo();
     }

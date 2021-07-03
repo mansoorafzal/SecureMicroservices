@@ -25,55 +25,56 @@ namespace Movies.Client.Controllers
             _movieService = movieService ?? throw new ArgumentNullException(nameof(movieService));
         }
 
-        // GET: Movies
         public async Task<IActionResult> Index()
         {
             await LogTokenAndClaims();
             return View(await _movieService.GetMovies());
         }
 
-        // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             return View(await _movieService.GetMovie(id.Value));
         }
 
-        // GET: Movies/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Movies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Genre,Rating,ReleaseDate,ImageUrl,Owner")] Movie movie)
         {
-            return View();
+            await _movieService.CreateMovie(movie);
+
+            return RedirectToAction("Index");
         }
 
-        // GET: Movies/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            return View();
+            return View(await _movieService.GetMovie(id.Value));
         }
 
-        // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Genre,Rating,ReleaseDate,ImageUrl,Owner")] Movie movie)
         {
-            return View();
+            var response = await _movieService.UpdateMovie(id, movie);
+
+            if (response)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                Debug.WriteLine($"An error occurred");
+                return View();
+            }
         }
 
-        // GET: Movies/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            return View();
+            return View(await _movieService.GetMovie(id.Value));
         }
 
         // POST: Movies/Delete/5
@@ -81,7 +82,17 @@ namespace Movies.Client.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            return View();
+            var response = await _movieService.DeleteMovie(id);
+
+            if (response)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                Debug.WriteLine($"An error occurred");
+                return View();
+            }
         }
 
         public async Task Logout()

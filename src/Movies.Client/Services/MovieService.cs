@@ -8,6 +8,8 @@ using Movies.Client.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Movies.Client.Services
@@ -25,31 +27,37 @@ namespace Movies.Client.Services
 
         public async Task<IEnumerable<Movie>> GetMovies()
         {
-            var movieList = await Execute<List<Movie>>(HttpMethod.Get, Url.Movies);
+            var movieList = await Get<List<Movie>>(Url.Movies);
 
             return movieList;
         }
 
         public async Task<Movie> GetMovie(int id)
         {
-            var movie = await Execute<Movie>(HttpMethod.Get, string.Format(Url.Movies_Id, id));
+            var movie = await Get<Movie>(string.Format(Url.Movies_Id, id));
 
             return movie;
         }
 
-        public Task<Movie> CreateMovie(Movie movie)
+        public async Task<bool> CreateMovie(Movie movie)
         {
-            throw new NotImplementedException();
+            await Execute<Movie>(HttpMethod.Post, Url.Movies, movie);
+
+            return true;
         }
 
-        public Task<Movie> UpdateMovie(Movie movie)
+        public async Task<bool> UpdateMovie(int id, Movie movie)
         {
-            throw new NotImplementedException();
+            await Execute<Movie>(HttpMethod.Put, string.Format(Url.Movies_Id, id), movie);
+
+            return true;
         }
 
-        public Task DeleteMovie(int id)
+        public async Task<bool> DeleteMovie(int id)
         {
-            throw new NotImplementedException();
+            await Execute<Movie>(HttpMethod.Delete, string.Format(Url.Movies_Id, id), default);
+
+            return true;
         }
 
         public async Task<UserInfoViewModel> GetUserInfo()
@@ -87,11 +95,21 @@ namespace Movies.Client.Services
             return new UserInfoViewModel(userInfoDictionary);
         }
 
-        private async Task<T> Execute<T>(HttpMethod method, string uri)
+        private async Task<T> Get<T>(string uri)
+        {
+            return await Execute<T>(HttpMethod.Get, uri, default);
+        }
+
+        private async Task<T> Execute<T>(HttpMethod method, string uri, T data)
         {
             var httpClient = _httpClientFactory.CreateClient(Constant.Http_Client_Movies_Api);
 
             var request = new HttpRequestMessage(method, uri);
+
+            if (method == HttpMethod.Post || method == HttpMethod.Put)
+            {
+                request.SerializeData<T>(data);
+            }
 
             var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
 
