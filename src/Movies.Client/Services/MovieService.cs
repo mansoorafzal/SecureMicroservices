@@ -40,7 +40,7 @@ namespace Movies.Client.Services
             return movieList;
         }
 
-        public Task<Movie> GetMovie(string id)
+        public async Task<Movie> GetMovie(int id)
         {
             throw new NotImplementedException();
         }

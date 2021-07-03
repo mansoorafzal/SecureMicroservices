@@ -23,9 +23,22 @@ namespace Movies.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovie()
+        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
             return await _context.Movies.ToListAsync();
+        }
+
+        [HttpGet(Constant.Movies_Api_Route_Id)]
+        public async Task<ActionResult<Movie>> GetMovie(int id)
+        {
+            var movie = await _context.Movies.FindAsync(id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return movie;
         }
 
         [HttpPost]
@@ -65,19 +78,6 @@ namespace Movies.Api.Controllers
             }
 
             return NoContent();
-        }
-
-        [HttpGet(Constant.Movies_Api_Route_Id)]
-        public async Task<ActionResult<Movie>> GetMovie(int id)
-        {
-            var movie = await _context.Movies.FindAsync(id);
-
-            if (movie == null)
-            {
-                return NotFound();
-            }
-
-            return movie;
         }
 
         [HttpDelete(Constant.Movies_Api_Route_Id)]
