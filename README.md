@@ -9,5 +9,5 @@ Implementation is based on the online course on Microservices. It includes follo
 <br> IdentityModel
 <br> Ocelot
 <br> IdentityServer4.EntityFramework
-<br> package Microsoft.EntityFrameworkCore.Design
+<br> Microsoft.EntityFrameworkCore.Design
 <br> Microsoft.EntityFrameworkCore.SqlServer
