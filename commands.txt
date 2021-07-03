@@ -1,4 +1,15 @@
+/* installing quick start for identityserver4 */
 iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/IdentityServer/IdentityServer4.Quickstart.UI/main/getmain.ps1'))
 << OR >>
 dotnet new -i identityserver4.templates
 dotnet new is4ui
+
+/* installing migration tool */
+dotnet tool install --global dotnet-ef
+
+/* create migrations */
+dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
+dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
+
+/* remove migrations */
+ef migrations remove
