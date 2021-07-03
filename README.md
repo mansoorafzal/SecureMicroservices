@@ -8,3 +8,6 @@ Implementation is based on the online course on Microservices. It includes follo
 <br> Microsoft.AspNetCore.Authentication.OpenIdConnect
 <br> IdentityModel
 <br> Ocelot
+<br> IdentityServer4.EntityFramework
+<br> Microsoft.EntityFrameworkCore.Design
+<br> Microsoft.EntityFrameworkCore.SqlServer
