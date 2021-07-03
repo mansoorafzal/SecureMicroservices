@@ -7,6 +7,7 @@
         public const string Identity_Api_Key = "IdentityApiKey";
         public const string Ocelot_Json_File_Name = "ocelot.json";
         public const string Response_Type = "code id_token";
+        public const string Client_Id_Policy = "ClientIdPolicy";
 
         public const string Connection_String_Identity_Server_Key = "IdentityServerDatabase";
         public const string Connection_String_Client_Key = "ClientDatabase";
@@ -30,6 +31,9 @@
         public const string Scope_Role_Value = "role";
         public const string Scope_Role_Text = "Role";
 
-        public const string Client_Id_Policy = "ClientIdPolicy";
+        public const string Movies_Api_Route_Name = "api/[controller]";
+        public const string Movies_Api_Route_Id = "{id}";
+        public const string Movies_Api_Action_Get_Movie = "GetMovie";
+        
     }
 }

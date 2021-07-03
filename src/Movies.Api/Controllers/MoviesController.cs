@@ -8,11 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Movies.Api.Data;
 using Movies.Api.Models;
 
-// TODO - Routes
-
 namespace Movies.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(Constant.Movies_Api_Route_Name)]
     [ApiController]
     [Authorize(Constant.Client_Id_Policy)]
     public class MoviesController : ControllerBase
@@ -24,30 +22,23 @@ namespace Movies.Api.Controllers
             _context = context;
         }
 
-        // GET: api/Movies
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovie()
         {
             return await _context.Movies.ToListAsync();
         }
 
-        // GET: api/Movies/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetMovie(int id)
+        [HttpPost]
+        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
         {
-            var movie = await _context.Movies.FindAsync(id);
+            _context.Movies.Add(movie);
 
-            if (movie == null)
-            {
-                return NotFound();
-            }
+            await _context.SaveChangesAsync();
 
-            return movie;
+            return CreatedAtAction(Constant.Movies_Api_Action_Get_Movie, new { id = movie.Id }, movie);
         }
 
-        // PUT: api/Movies/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut(Constant.Movies_Api_Route_Id)]
         public async Task<IActionResult> PutMovie(int id, Movie movie)
         {
             if (id != movie.Id)
@@ -76,22 +67,24 @@ namespace Movies.Api.Controllers
             return NoContent();
         }
 
-        // POST: api/Movies
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Movie>> PostMovie(Movie movie)
+        [HttpGet(Constant.Movies_Api_Route_Id)]
+        public async Task<ActionResult<Movie>> GetMovie(int id)
         {
-            _context.Movies.Add(movie);
-            await _context.SaveChangesAsync();
+            var movie = await _context.Movies.FindAsync(id);
 
-            return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return movie;
         }
 
-        // DELETE: api/Movies/5
-        [HttpDelete("{id}")]
+        [HttpDelete(Constant.Movies_Api_Route_Id)]
         public async Task<IActionResult> DeleteMovie(int id)
         {
             var movie = await _context.Movies.FindAsync(id);
+
             if (movie == null)
             {
                 return NotFound();
