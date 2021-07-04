@@ -11,8 +11,6 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Movies.Client.Models;
 using Movies.Client.Services;
 
-// TODO - Routes
-
 namespace Movies.Client.Controllers
 {
     [Authorize]
@@ -43,11 +41,11 @@ namespace Movies.Client.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Genre,Rating,ReleaseDate,ImageUrl,Owner")] Movie movie)
+        public async Task<IActionResult> Create([Bind(Constant.Movies_Controller_Bind_Attribute)] Movie movie)
         {
             await _movieService.CreateMovie(movie);
 
-            return RedirectToAction("Index");
+            return RedirectToAction(Constant.Movies_Controller_Action_Index);
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -57,13 +55,13 @@ namespace Movies.Client.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Genre,Rating,ReleaseDate,ImageUrl,Owner")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind(Constant.Movies_Controller_Bind_Attribute)] Movie movie)
         {
             var response = await _movieService.UpdateMovie(id, movie);
 
             if (response)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction(Constant.Movies_Controller_Action_Index);
             }
             else
             {
@@ -76,9 +74,8 @@ namespace Movies.Client.Controllers
         {
             return View(await _movieService.GetMovie(id.Value));
         }
-
-        // POST: Movies/Delete/5
-        [HttpPost, ActionName("Delete")]
+        
+        [HttpPost, ActionName(Constant.Movies_Controller_Action_Delete)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -86,7 +83,7 @@ namespace Movies.Client.Controllers
 
             if (response)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction(Constant.Movies_Controller_Action_Index);
             }
             else
             {
@@ -107,11 +104,6 @@ namespace Movies.Client.Controllers
             var userInfo = await _movieService.GetUserInfo();
             
             return View(userInfo);
-        }
-
-        private bool MovieExists(int id)
-        {
-            return true;
         }
 
         private async Task LogTokenAndClaims()

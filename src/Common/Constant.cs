@@ -34,6 +34,9 @@
         public const string Movies_Api_Route_Name = "api/[controller]";
         public const string Movies_Api_Route_Id = "{id}";
         public const string Movies_Api_Action_Get_Movie = "GetMovie";
-        
+
+        public const string Movies_Controller_Action_Index = "Index";
+        public const string Movies_Controller_Action_Delete = "Delete";
+        public const string Movies_Controller_Bind_Attribute = "Id,Title,Genre,Rating,ReleaseDate,ImageUrl,Owner";
     }
 }
