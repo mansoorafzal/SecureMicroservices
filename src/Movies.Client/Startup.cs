@@ -31,6 +31,7 @@ namespace Movies.Client
             services.AddControllersWithViews();
 
             services.AddScoped<IMovieService, MovieService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddAuthentication(options =>
             {

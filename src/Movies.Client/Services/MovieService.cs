@@ -1,8 +1,5 @@
 ﻿using Common;
-using IdentityModel.Client;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Movies.Client.Extensions;
 using Movies.Client.Models;
 using System;
@@ -56,41 +53,6 @@ namespace Movies.Client.Services
             await Execute<Movie>(HttpMethod.Delete, string.Format(Url.Movies_Id, id), default);
 
             return true;
-        }
-
-        public async Task<UserInfoViewModel> GetUserInfo()
-        {
-            var idpClient = _httpClientFactory.CreateClient(Constant.Http_Client_Idp);
-
-            var metaDataResponse = await idpClient.GetDiscoveryDocumentAsync();
-
-            if (metaDataResponse.IsError)
-            {
-                throw new HttpRequestException("Something went wrong while requesting the access token");
-            }
-
-            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
-
-            var userInfoResponse = await idpClient.GetUserInfoAsync(
-               new UserInfoRequest
-               {
-                   Address = metaDataResponse.UserInfoEndpoint,
-                   Token = accessToken
-               });
-
-            if (userInfoResponse.IsError)
-            {
-                throw new HttpRequestException("Something went wrong while getting user info");
-            }
-
-            var userInfoDictionary = new Dictionary<string, string>();
-
-            foreach (var claim in userInfoResponse.Claims)
-            {
-                userInfoDictionary.Add(claim.Type, claim.Value);
-            }
-
-            return new UserInfoViewModel(userInfoDictionary);
         }
 
         private async Task<T> Get<T>(string uri)

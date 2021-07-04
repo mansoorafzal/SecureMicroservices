@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Movies.Client.Models;
 using Movies.Client.Services;
 
@@ -26,9 +25,7 @@ namespace Movies.Client.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {
-            await LogTokenAndClaims();
-            
+        {   
             var movies = await _movieService.GetMovies();
             movies = FilterMovies(movies.ToList());
             
@@ -102,26 +99,6 @@ namespace Movies.Client.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
-        }
-
-        [Authorize(Roles = Constant.Role_Admin)]
-        public async Task<IActionResult> OnlyAdmin()
-        {
-            var userInfo = await _movieService.GetUserInfo();
-            
-            return View(userInfo);
-        }
-
-        private async Task LogTokenAndClaims()
-        {
-            var identityToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.IdToken);
-
-            Debug.WriteLine($"Identity token: {identityToken}");
-
-            foreach (var claim in User.Claims)
-            {
-                Debug.WriteLine($"Claim type: {claim.Type} - Claim value: {claim.Value}");
-            }
         }
 
         private List<Movie> FilterMovies(List<Movie> movies)

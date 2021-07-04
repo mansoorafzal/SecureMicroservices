@@ -2,11 +2,11 @@
 
 namespace Movies.Client.Models
 {
-    public class UserInfoViewModel
+    public class UserInfo
     {
         public Dictionary<string, string> UserInfoDictionary { get; private set; } = null;
 
-        public UserInfoViewModel(Dictionary<string, string> userInfoDictionary)
+        public UserInfo(Dictionary<string, string> userInfoDictionary)
         {
             UserInfoDictionary = userInfoDictionary;
         }

@@ -15,7 +15,5 @@ namespace Movies.Client.Services
         Task<bool> UpdateMovie(int id, Movie movie);
 
         Task<bool> DeleteMovie(int id);
-
-        Task<UserInfoViewModel> GetUserInfo();
     }
 }
