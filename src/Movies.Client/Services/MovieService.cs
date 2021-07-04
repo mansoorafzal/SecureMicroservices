@@ -8,8 +8,6 @@ using Movies.Client.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Movies.Client.Services
@@ -115,7 +113,14 @@ namespace Movies.Client.Services
 
             response.EnsureSuccessStatusCode();
 
-            return await response.ReadContentAs<T>();
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return await response.ReadContentAs<T>();
+            }
+            else
+            {
+                return default;
+            }
         }
     }
 }
