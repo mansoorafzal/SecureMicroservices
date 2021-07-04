@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Common;
 using Microsoft.AspNetCore.Authentication;
@@ -26,7 +28,11 @@ namespace Movies.Client.Controllers
         public async Task<IActionResult> Index()
         {
             await LogTokenAndClaims();
-            return View(await _movieService.GetMovies());
+            
+            var movies = await _movieService.GetMovies();
+            movies = FilterMovies(movies.ToList());
+            
+            return View(movies);
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -116,6 +122,11 @@ namespace Movies.Client.Controllers
             {
                 Debug.WriteLine($"Claim type: {claim.Type} - Claim value: {claim.Value}");
             }
+        }
+
+        private List<Movie> FilterMovies(List<Movie> movies)
+        {
+            return movies.FindAll(m => m.Owner.Equals(User.Identity.Name, StringComparison.OrdinalIgnoreCase));
         }
     }
 }
